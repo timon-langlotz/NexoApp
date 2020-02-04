@@ -1,2 +1,2 @@
-include ':app'
-rootProject.name='NexoApp'
+include ":app", ":lib"
+rootProject.name="NexoApp"
