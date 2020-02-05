@@ -1,7 +1,7 @@
-package com.adyen.nexoapp.model
+package com.adyen.nexoapp.model.api
 
-import com.adyen.nexoapp.model.body.payment.PaymentRequest
-import com.adyen.nexoapp.model.header.MessageHeader
+import com.adyen.nexoapp.model.api.body.payment.PaymentRequest
+import com.adyen.nexoapp.model.api.header.MessageHeader
 import com.squareup.moshi.Json
 
 data class SaleToPoiRequest(

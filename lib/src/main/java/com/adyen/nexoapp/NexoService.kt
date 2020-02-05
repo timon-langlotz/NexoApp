@@ -1,8 +1,8 @@
 package com.adyen.nexoapp
 
 import android.content.Context
-import com.adyen.nexoapp.model.RequestWrapper
-import com.adyen.nexoapp.model.ResponseWrapper
+import com.adyen.nexoapp.model.api.RequestWrapper
+import com.adyen.nexoapp.model.api.ResponseWrapper
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient

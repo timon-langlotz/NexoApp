@@ -1,4 +1,4 @@
-package com.adyen.nexoapp.model
+package com.adyen.nexoapp.model.api
 
 import com.squareup.moshi.Json
 
