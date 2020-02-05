@@ -11,7 +11,7 @@ private val bodyLoggingInterceptor by lazy {
                 Log.d(HttpInterceptor.LOG_TAG, message)
             }
         }
-    )
+    ).apply { setLevel(HttpLoggingInterceptor.Level.BODY) }
 }
 object HttpInterceptor : Interceptor by bodyLoggingInterceptor {
     const val LOG_TAG = "HttpInterceptor"
