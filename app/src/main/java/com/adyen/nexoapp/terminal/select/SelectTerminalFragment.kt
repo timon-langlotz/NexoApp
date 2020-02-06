@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.adyen.nexoapp.R
 import com.adyen.nexoapp.lib.model.terminal.TerminalModel
+import kotlinx.android.synthetic.main.fragment_select_terminal.selectButton
 import kotlinx.android.synthetic.main.fragment_select_terminal.terminalModelRecyclerView
 import kotlinx.android.synthetic.main.fragment_select_terminal.terminalModelTextView
 import kotlinx.android.synthetic.main.view_terminal_model.view.terminalModelImageView
@@ -18,6 +19,8 @@ import kotlinx.android.synthetic.main.view_terminal_model.view.terminalModelImag
 
 class SelectTerminalFragment : Fragment() {
     private val snapHelper by lazy { LinearSnapHelper() }
+
+    var listener: Listener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_select_terminal, container, false)
@@ -47,6 +50,14 @@ class SelectTerminalFragment : Fragment() {
             }
         })
         snapHelper.attachToRecyclerView(terminalModelRecyclerView)
+
+        selectButton.setOnClickListener {
+            val snappedItem = getSnappedItem()
+
+            if (snappedItem != null) {
+                listener?.onTerminalModelSelected(snappedItem.terminalModel)
+            }
+        }
     }
 
     private fun getSnappedView(): View? {
@@ -75,6 +86,10 @@ class SelectTerminalFragment : Fragment() {
         const val TAG = "SelectTerminalFragment"
     }
 
+    interface Listener {
+        fun onTerminalModelSelected(terminalModel: TerminalModel)
+    }
+
     private data class Item(val terminalModel: TerminalModel, val nameRes: Int, val drawableRes: Int)
 
     private inner class Adapter(private val itemWidth: Int) : RecyclerView.Adapter<ViewHolder>() {
@@ -93,14 +108,20 @@ class SelectTerminalFragment : Fragment() {
             val itemView = LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.view_terminal_model, parent, false)
+            val viewHolder = ViewHolder(itemView)
             val layoutParams = RecyclerView.LayoutParams(itemWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
             itemView.layoutParams = layoutParams
             itemView.setOnClickListener {
                 if (it != getSnappedView()) {
                     scrollToItem(it)
+                } else {
+                    val item = items.getOrNull(viewHolder.adapterPosition)
+                    if (item != null) {
+                        listener?.onTerminalModelSelected(item.terminalModel)
+                    }
                 }
             }
-            return ViewHolder(itemView)
+            return viewHolder
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
