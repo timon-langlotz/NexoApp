@@ -1,4 +1,4 @@
-package com.adyen.nexoapp.model.api.body.payment
+package com.adyen.nexoapp.lib.model.api.body.payment
 
 import com.squareup.moshi.Json
 

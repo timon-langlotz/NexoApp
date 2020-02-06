@@ -2,16 +2,17 @@ package com.adyen.nexoapp
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.adyen.nexoapp.model.api.RequestWrapper
-import com.adyen.nexoapp.model.api.SaleToPoiRequest
-import com.adyen.nexoapp.model.api.body.payment.AmountsReq
-import com.adyen.nexoapp.model.api.body.payment.PaymentRequest
-import com.adyen.nexoapp.model.api.body.payment.PaymentTransaction
-import com.adyen.nexoapp.model.api.body.payment.SaleData
-import com.adyen.nexoapp.model.api.body.payment.SaleTransactionId
-import com.adyen.nexoapp.model.api.header.MessageCategory
-import com.adyen.nexoapp.model.api.header.MessageHeader
-import com.adyen.nexoapp.util.toUtcTimeStamp
+import com.adyen.nexoapp.lib.NexoService
+import com.adyen.nexoapp.lib.model.api.RequestWrapper
+import com.adyen.nexoapp.lib.model.api.SaleToPoiRequest
+import com.adyen.nexoapp.lib.model.api.body.payment.AmountsReq
+import com.adyen.nexoapp.lib.model.api.body.payment.PaymentRequest
+import com.adyen.nexoapp.lib.model.api.body.payment.PaymentTransaction
+import com.adyen.nexoapp.lib.model.api.body.payment.SaleData
+import com.adyen.nexoapp.lib.model.api.body.payment.SaleTransactionId
+import com.adyen.nexoapp.lib.model.api.header.MessageCategory
+import com.adyen.nexoapp.lib.model.api.header.MessageHeader
+import com.adyen.nexoapp.lib.util.toUtcTimeStamp
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.Date

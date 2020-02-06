@@ -1,4 +1,4 @@
-package com.adyen.nexoapp.model.terminal
+package com.adyen.nexoapp.lib.model.terminal
 
 enum class TerminalModel(val model: String, val serialLength: Int) {
     P400("P400", 9);

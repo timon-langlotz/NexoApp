@@ -1,4 +1,4 @@
-package com.adyen.nexoapp.util
+package com.adyen.nexoapp.lib.util
 
 import java.util.Random
 

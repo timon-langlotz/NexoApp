@@ -1,4 +1,4 @@
-package com.adyen.nexoapp.util
+package com.adyen.nexoapp.lib.util
 
 import java.text.SimpleDateFormat
 import java.util.Date

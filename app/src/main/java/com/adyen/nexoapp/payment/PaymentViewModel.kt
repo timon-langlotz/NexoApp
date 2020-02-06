@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.adyen.nexoapp.TerminalCommunicator
-import com.adyen.nexoapp.model.api.body.payment.PaymentResponse
+import com.adyen.nexoapp.lib.TerminalCommunicator
+import com.adyen.nexoapp.lib.model.api.body.payment.PaymentResponse
 
 class PaymentViewModel(application: Application, poiId: String, ipAddress: String) : AndroidViewModel(application) {
     private val terminalCommunicator by lazy { TerminalCommunicator(application, poiId, ipAddress) }
