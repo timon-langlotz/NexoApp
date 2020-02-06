@@ -2,7 +2,7 @@ package com.adyen.nexoapp.lib
 
 import android.content.Context
 import com.adyen.nexoapp.HttpInterceptor
-import com.adyen.nexoapp.R
+import com.adyen.nexoapp.lib.R
 import com.adyen.nexoapp.lib.model.api.RequestWrapper
 import com.adyen.nexoapp.lib.model.api.ResponseWrapper
 import com.squareup.moshi.Moshi
