@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.adyen.nexoapp.R
-import com.adyen.nexoapp.lib.model.terminal.TerminalModel
+import com.adyen.nexoapp.terminal.TerminalItem
 import kotlinx.android.synthetic.main.fragment_select_terminal.selectButton
 import kotlinx.android.synthetic.main.fragment_select_terminal.terminalModelRecyclerView
 import kotlinx.android.synthetic.main.fragment_select_terminal.terminalModelTextView
@@ -55,7 +55,7 @@ class SelectTerminalFragment : Fragment() {
             val snappedItem = getSnappedItem()
 
             if (snappedItem != null) {
-                listener?.onTerminalModelSelected(snappedItem.terminalModel)
+                listener?.onTerminalItemSelected(snappedItem)
             }
         }
     }
@@ -64,7 +64,7 @@ class SelectTerminalFragment : Fragment() {
         return snapHelper.findSnapView(terminalModelRecyclerView.layoutManager)
     }
 
-    private fun getSnappedItem(): Item? {
+    private fun getSnappedItem(): TerminalItem? {
         val snappedView = getSnappedView()
         return if (snappedView != null) {
             val adapterPosition = terminalModelRecyclerView.getChildAdapterPosition(snappedView)
@@ -87,18 +87,11 @@ class SelectTerminalFragment : Fragment() {
     }
 
     interface Listener {
-        fun onTerminalModelSelected(terminalModel: TerminalModel)
+        fun onTerminalItemSelected(terminalItem: TerminalItem)
     }
 
-    private data class Item(val terminalModel: TerminalModel, val nameRes: Int, val drawableRes: Int)
-
     private inner class Adapter(private val itemWidth: Int) : RecyclerView.Adapter<ViewHolder>() {
-        val items = listOf(
-            Item(TerminalModel.P400_PLUS, R.string.p400_plus, R.drawable.p400_plus),
-            Item(TerminalModel.V400C_PLUS, R.string.v400c_plus, R.drawable.v400c_plus),
-            Item(TerminalModel.V240M_PLUS, R.string.v240m_plus, R.drawable.v240m_plus),
-            Item(TerminalModel.V400M, R.string.v400m, R.drawable.v400m)
-        )
+        val items = TerminalItem.values()
 
         override fun getItemCount(): Int {
             return items.size
@@ -117,7 +110,7 @@ class SelectTerminalFragment : Fragment() {
                 } else {
                     val item = items.getOrNull(viewHolder.adapterPosition)
                     if (item != null) {
-                        listener?.onTerminalModelSelected(item.terminalModel)
+                        listener?.onTerminalItemSelected(item)
                     }
                 }
             }

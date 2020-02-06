@@ -21,6 +21,7 @@ class PaymentFragment : Fragment() {
     }
 
     companion object {
+        const val TAG = "PaymentFragment"
         private const val ARG_POI_ID = "ARG_POI_ID"
         private const val ARG_IP_ADDRESS = "ARG_IP_ADDRESS"
 
