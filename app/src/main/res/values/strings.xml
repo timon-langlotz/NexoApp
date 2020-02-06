@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">NexoApp</string>
+
+    <string name="p400_plus" translatable="false">P400 PLUS</string>
+    <string name="v240m_plus" translatable="false">V240m PLUS</string>
+    <string name="v400c_plus" translatable="false">V400c PLUS</string>
+    <string name="v400m" translatable="false">V400m</string>
+
+    <string name="select_terminal">Select Terminal</string>
 </resources>
