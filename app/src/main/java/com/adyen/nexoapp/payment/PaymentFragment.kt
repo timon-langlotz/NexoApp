@@ -5,7 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import com.adyen.nexoapp.R
 import com.adyen.nexoapp.util.getViewModelProvider
+import kotlinx.android.synthetic.main.fragment_payment.amountEditText
+import kotlinx.android.synthetic.main.fragment_payment.currencyEditText
+import kotlinx.android.synthetic.main.fragment_payment.startPaymentButton
+import kotlinx.android.synthetic.main.fragment_payment.stateTextView
 
 class PaymentFragment : Fragment() {
     private val viewModel by lazy {
@@ -17,7 +23,33 @@ class PaymentFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return inflater.inflate(R.layout.fragment_payment, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.paymentStateLiveData.observe(viewLifecycleOwner, Observer { state: PaymentState? ->
+            val text = when (state) {
+                is IdleState -> getString(R.string.state_idle_status)
+                is InProgressState -> getString(R.string.state_in_progress_status)
+                is CompleteState -> getString(R.string.state_complete_status)
+                is ErrorState -> getString(R.string.state_error_status_format, state.message)
+                null -> getString(R.string.state_error_status_format)
+            }
+            stateTextView.text = text
+        })
+
+        startPaymentButton.setOnClickListener {
+            val currency = currencyEditText.text.toString()
+            val amount = amountEditText.text.toString().toDoubleOrNull()
+
+            if (amount != null) {
+                viewModel.sendPayment(currency, amount)
+            } else {
+                viewModel.postError("Invalid amount")
+            }
+        }
     }
 
     companion object {
