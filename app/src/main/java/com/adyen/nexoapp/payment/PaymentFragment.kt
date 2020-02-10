@@ -45,7 +45,7 @@ class PaymentFragment : Fragment() {
             val amount = amountEditText.text.toString().toDoubleOrNull()
 
             if (amount != null) {
-                viewModel.sendPayment(currency, amount)
+                viewModel.startPayment(currency, amount)
             } else {
                 viewModel.postError("Invalid amount")
             }

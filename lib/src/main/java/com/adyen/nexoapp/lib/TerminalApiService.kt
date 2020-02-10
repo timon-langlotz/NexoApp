@@ -2,9 +2,8 @@ package com.adyen.nexoapp.lib
 
 import android.content.Context
 import com.adyen.nexoapp.HttpInterceptor
-import com.adyen.nexoapp.lib.R
-import com.adyen.nexoapp.lib.model.api.RequestWrapper
 import com.adyen.nexoapp.lib.model.api.ResponseWrapper
+import com.adyen.nexoapp.lib.model.api.TerminalRequest
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -22,12 +21,12 @@ import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
 
-interface NexoService {
+interface TerminalApiService {
     @POST("nexo")
-    fun sendPayment(@Body request: RequestWrapper): Call<ResponseWrapper>
+    fun startPayment(@Body request: TerminalRequest): Call<ResponseWrapper>
 
     companion object {
-        fun forIpAddress(context: Context, ipAddress: String): NexoService {
+        fun forIpAddress(context: Context, ipAddress: String): TerminalApiService {
             val okHttpClient = getOkHttpClient(context, ipAddress)
             val converterFactory = MoshiConverterFactory.create(
                 Moshi.Builder()
@@ -39,7 +38,7 @@ interface NexoService {
                 .addConverterFactory(converterFactory)
                 .client(okHttpClient)
                 .build()
-            return retrofit.create(NexoService::class.java)
+            return retrofit.create(TerminalApiService::class.java)
         }
 
         private fun getOkHttpClient(context: Context, ipAddress: String): OkHttpClient {

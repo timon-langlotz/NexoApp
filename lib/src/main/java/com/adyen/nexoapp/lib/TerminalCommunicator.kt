@@ -2,9 +2,9 @@ package com.adyen.nexoapp.lib
 
 import android.app.Application
 import android.content.Context
-import com.adyen.nexoapp.lib.model.api.RequestWrapper
 import com.adyen.nexoapp.lib.model.api.ResponseWrapper
 import com.adyen.nexoapp.lib.model.api.SaleToPoiRequest
+import com.adyen.nexoapp.lib.model.api.TerminalRequest
 import com.adyen.nexoapp.lib.model.api.body.payment.AmountsReq
 import com.adyen.nexoapp.lib.model.api.body.payment.PaymentRequest
 import com.adyen.nexoapp.lib.model.api.body.payment.PaymentResponse
@@ -30,9 +30,9 @@ class TerminalCommunicator(application: Application, val poiId: String, val ipAd
         }.invoke()
     }
 
-    private val nexoService by lazy { NexoService.forIpAddress(application, ipAddress) }
+    private val terminalApiService by lazy { TerminalApiService.forIpAddress(application, ipAddress) }
 
-    fun sendPayment(
+    fun startPayment(
         currency: String,
         amount: Double,
         serviceId: String = Random.alphaNumeric(10),
@@ -46,9 +46,9 @@ class TerminalCommunicator(application: Application, val poiId: String, val ipAd
         val saleTransactionId = SaleTransactionId(timeStamp, transactionId)
         val saleData = SaleData(saleTransactionId)
         val paymentRequest = PaymentRequest(paymentTransaction, saleData)
-        val request = SaleToPoiRequest(header, paymentRequest)
-        val requestWrapper = RequestWrapper(request)
-        nexoService.sendPayment(requestWrapper).enqueue(object : retrofit2.Callback<ResponseWrapper> {
+        val saleToPoiRequest = SaleToPoiRequest(header, paymentRequest)
+        val terminalRequest = TerminalRequest(saleToPoiRequest)
+        terminalApiService.startPayment(terminalRequest).enqueue(object : retrofit2.Callback<ResponseWrapper> {
             override fun onResponse(call: Call<ResponseWrapper>, response: Response<ResponseWrapper>) {
                 val responseWrapper = response.body()
 

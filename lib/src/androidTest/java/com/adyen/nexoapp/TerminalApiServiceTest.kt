@@ -2,9 +2,9 @@ package com.adyen.nexoapp
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.adyen.nexoapp.lib.NexoService
-import com.adyen.nexoapp.lib.model.api.RequestWrapper
+import com.adyen.nexoapp.lib.TerminalApiService
 import com.adyen.nexoapp.lib.model.api.SaleToPoiRequest
+import com.adyen.nexoapp.lib.model.api.TerminalRequest
 import com.adyen.nexoapp.lib.model.api.body.payment.AmountsReq
 import com.adyen.nexoapp.lib.model.api.body.payment.PaymentRequest
 import com.adyen.nexoapp.lib.model.api.body.payment.PaymentTransaction
@@ -19,12 +19,12 @@ import java.util.Date
 import java.util.UUID
 
 @RunWith(AndroidJUnit4::class)
-class NexoServiceTest {
+class TerminalApiServiceTest {
 
     @Test
     fun testPaymentRequest() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        val nexoService = NexoService.forIpAddress(context, "<TODO>")
+        val nexoService = TerminalApiService.forIpAddress(context, "<TODO>")
 
         val saleId = UUID.randomUUID().toString()
         val serviceId = "Test"
@@ -40,9 +40,9 @@ class NexoServiceTest {
         val paymentRequest = PaymentRequest(paymentTransaction, saleData)
 
         val saleToPoiRequest = SaleToPoiRequest(header, paymentRequest)
-        val requestWrapper = RequestWrapper(saleToPoiRequest)
+        val terminalRequest = TerminalRequest(saleToPoiRequest)
         val response = nexoService
-            .sendPayment(requestWrapper)
+            .startPayment(terminalRequest)
             .execute()
         println(response)
     }

@@ -17,9 +17,9 @@ class PaymentViewModel(application: Application, poiId: String, ipAddress: Strin
 
     val paymentStateLiveData: LiveData<PaymentState> = _paymentStateLiveData
 
-    fun sendPayment(currency: String, amount: Double) {
+    fun startPayment(currency: String, amount: Double) {
         _paymentStateLiveData.postValue(InProgressState)
-        terminalCommunicator.sendPayment(currency, amount, callback = object : TerminalCommunicator.Callback<PaymentResponse> {
+        terminalCommunicator.startPayment(currency, amount, callback = object : TerminalCommunicator.Callback<PaymentResponse> {
             override fun onResponse(response: PaymentResponse) {
                 _paymentStateLiveData.postValue(CompleteState(response))
                 runOnUiThread(IDLE_DELAY) { _paymentStateLiveData.value = IdleState }
