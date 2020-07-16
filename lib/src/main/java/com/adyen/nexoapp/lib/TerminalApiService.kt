@@ -14,6 +14,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 import java.security.KeyStore
 import java.security.cert.CertificateFactory
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
@@ -23,7 +24,7 @@ import javax.net.ssl.X509TrustManager
 
 interface TerminalApiService {
     @POST("nexo")
-    fun startPayment(@Body request: TerminalRequest): Call<ResponseWrapper>
+    fun startTransaction(@Body request: TerminalRequest): Call<ResponseWrapper>
 
     companion object {
         fun forIpAddress(context: Context, ipAddress: String): TerminalApiService {
@@ -47,6 +48,8 @@ interface TerminalApiService {
                 .apply { init(null, trustManagers, null) }
                 .socketFactory
             return OkHttpClient.Builder()
+                .readTimeout(300, TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS)
                 .sslSocketFactory(socketFactory, trustManagers.first { it is X509TrustManager } as X509TrustManager)
                 .hostnameVerifier(HostnameVerifier { hostname, _ -> hostname == ipAddress })
                 .addInterceptor(HttpInterceptor)

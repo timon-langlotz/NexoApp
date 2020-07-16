@@ -1,20 +1,23 @@
-package com.adyen.nexoapp.payment
+package com.adyen.nexoapp.refundtoacard
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.adyen.nexoapp.*
 import com.adyen.nexoapp.util.getViewModelProvider
-import kotlinx.android.synthetic.main.fragment_payment.*
+import kotlinx.android.synthetic.main.fragment_payment.amountEditText
+import kotlinx.android.synthetic.main.fragment_payment.currencyEditText
+import kotlinx.android.synthetic.main.fragment_payment.stateTextView
+import kotlinx.android.synthetic.main.refund_to_a_card_fragment.*
 
-class PaymentFragment : Fragment() {
+class RefundToACardFragment : Fragment() {
     private val viewModel by lazy {
         val activity = requireActivity()
-        val factory = PaymentViewModel.Factory(activity.application)
-        getViewModelProvider(activity, factory).get(PaymentViewModel::class.java)
+        val factory = RefundToACardViewModel.Factory(activity.application)
+        getViewModelProvider(activity, factory).get(RefundToACardViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -22,7 +25,7 @@ class PaymentFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_payment, container, false)
+        return inflater.inflate(R.layout.refund_to_a_card_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,14 +44,14 @@ class PaymentFragment : Fragment() {
                 stateTextView.text = text
             })
 
-        startPaymentButton.setOnClickListener {
+        refundButton.setOnClickListener {
             val currency = if (currencyEditText.text.toString()
                     .isEmpty()
             ) getString(R.string.currency_hint) else currencyEditText.text.toString()
             val amount = amountEditText.text.toString().toDoubleOrNull()
 
             if (amount != null) {
-                viewModel.startPayment(currency, amount)
+                viewModel.startRefund(currency, amount)
             } else {
                 viewModel.postError("Invalid amount")
             }
@@ -59,8 +62,8 @@ class PaymentFragment : Fragment() {
     companion object {
         const val TAG = "Payment"
 
-        fun newInstance(): PaymentFragment {
-            return PaymentFragment()
+        fun newInstance(): RefundToACardFragment {
+            return RefundToACardFragment()
         }
     }
 

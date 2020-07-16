@@ -1,9 +1,11 @@
 package com.adyen.nexoapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.adyen.nexoapp.payment.PaymentFragment
+import com.adyen.nexoapp.lib.model.terminal.TerminalModel
+import com.adyen.nexoapp.terminal.SelectedTerminalInfo
 import com.adyen.nexoapp.terminal.TerminalItem
 import com.adyen.nexoapp.terminal.select.SelectTerminalFragment
 import com.adyen.nexoapp.terminal.details.TerminalDetailsFragment
@@ -19,19 +21,13 @@ class MainActivity : AppCompatActivity(), SelectTerminalFragment.Listener, Termi
     }
 
     override fun onTerminalConfigured(terminalItem: TerminalItem, serialNumber: String, ipAddress: String) {
-        val poiId = try {
-            terminalItem.terminalModel.createPoiId(serialNumber)
-        } catch (e: IllegalArgumentException) {
-            e.printStackTrace()
-            return
-        }
 
-        val paymentFragment = PaymentFragment.newInstance(poiId, ipAddress)
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.container, paymentFragment, PaymentFragment.TAG)
-            .addToBackStack(TerminalDetailsFragment.TAG)
-            .commit()
+        SelectedTerminalInfo.terminalModelName = TerminalModel.valueOf(terminalItem.name).model
+        SelectedTerminalInfo.serialNumber = serialNumber
+        SelectedTerminalInfo.ipAddress = ipAddress
+
+        val intent = Intent(this, TransactionActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onAttachFragment(fragment: Fragment) {
