@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import com.adyen.nexoapp.R
+import com.adyen.nexoapp.terminal.SelectedTerminalInfo
 import com.adyen.nexoapp.terminal.TerminalItem
 import com.adyen.nexoapp.util.WifiUtil
 import kotlinx.android.synthetic.main.fragment_terminal_details.ipAddressEditText

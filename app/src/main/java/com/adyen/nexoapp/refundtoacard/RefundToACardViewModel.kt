@@ -1,7 +1,6 @@
-package com.adyen.nexoapp.payment
+package com.adyen.nexoapp.refundtoacard
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,11 +8,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.adyen.nexoapp.*
 import com.adyen.nexoapp.lib.TerminalCommunicator
 import com.adyen.nexoapp.lib.model.api.body.payment.PaymentResponse
-import com.adyen.nexoapp.lib.model.transactions.PaymentModel
-import com.adyen.nexoapp.util.runOnUiThread
+import com.adyen.nexoapp.lib.model.transactions.RefundToACardModel
+import com.adyen.nexoapp.payment.*
 import com.adyen.nexoapp.terminal.SelectedTerminalInfo
+import com.adyen.nexoapp.util.runOnUiThread
 
-class PaymentViewModel(val app: Application) : AndroidViewModel(app) {
+class RefundToACardViewModel(val app: Application) : ViewModel() {
     private val terminalCommunicator by lazy { TerminalCommunicator(app, SelectedTerminalInfo.ipAddress) }
 
     private val _paymentStateLiveData = MutableLiveData<TransactionState>().apply { value =
@@ -22,16 +22,16 @@ class PaymentViewModel(val app: Application) : AndroidViewModel(app) {
 
     val transactionStateLiveData: LiveData<TransactionState> = _paymentStateLiveData
 
-    fun startPayment(currency: String, amount: Double) {
+    fun startRefund(currency: String, amount: Double) {
         _paymentStateLiveData.postValue(InProgressState)
         val poiId = SelectedTerminalInfo.poiId
-        val payment = PaymentModel(
+        val refund = RefundToACardModel(
             app,
             poiId,
             currency,
             amount
         )
-        terminalCommunicator.startTransaction(payment, callback = object : TerminalCommunicator.Callback<PaymentResponse> {
+        terminalCommunicator.startTransaction(refund, callback = object : TerminalCommunicator.Callback<PaymentResponse> {
             override fun onResponse(response: PaymentResponse) {
                 _paymentStateLiveData.postValue(
                     CompleteState(
@@ -64,7 +64,8 @@ class PaymentViewModel(val app: Application) : AndroidViewModel(app) {
         private val application: Application
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return PaymentViewModel(application) as T
+            return RefundToACardViewModel(application) as T
         }
     }
+
 }
